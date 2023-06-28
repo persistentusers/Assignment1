@@ -1,6 +1,10 @@
 .App {
   min-height: 100vh;
   text-align: center;
+  background-image: url('../src/960x0.webp');
+  background-repeat: no-repeat;
+  background-attachment: fixed;  
+  background-size: cover;
 }
 
 .App-header {
