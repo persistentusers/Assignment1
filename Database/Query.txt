@@ -1,0 +1,14 @@
+28/6/2023 -- Table to Add api --
+
+CREATE DATABASE apimonitoring;
+
+USE apimonitoring;
+
+create table AddApi(
+	Id INT NOT NULL  auto_increment ,
+	API_Name  varchar(50) NOT NULL,
+	API_Request varchar(500) NOT NULL,
+	API_URL varchar(100) NOT NULL,
+
+	PRIMARY KEY (id)
+);
