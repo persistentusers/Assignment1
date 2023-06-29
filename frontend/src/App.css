@@ -1,9 +1,9 @@
 .App {
   min-height: 100vh;
   text-align: center;
-  background-image: url('../src/960x0.webp');
+  background-image: url("../src/homeImage.webp");
   background-repeat: no-repeat;
-  background-attachment: fixed;  
+  background-attachment: fixed;
   background-size: cover;
 }
 
@@ -15,4 +15,3 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import { Modal } from './Modal';
- 
+import { Modal } from "./Modal";
+
 const Home = () => {
   const [inputName, setInputName] = useState("");
   const [apiName, setApiName] = useState("");
@@ -24,7 +24,7 @@ const Home = () => {
           onChange={(e) => {
             onInputAPIChange(e);
           }}
-          className="w-4/12 px-8 py-4 text-sm border-none rounded-lg shadow-lg shadow-black"
+          className="w-4/12 px-8 py-4 text-sm border-none rounded-lg shadow-md shadow-black"
           type="text"
           placeholder="Please Add API Name"
         />
@@ -36,7 +36,7 @@ const Home = () => {
         >
           Create API
         </button>
-       { apiName && <Modal apiName={apiName} onClose={() => setApiName("")}/>}
+        {apiName && <Modal apiName={apiName} onClose={() => setApiName("")} />}
       </div>
     </>
   );

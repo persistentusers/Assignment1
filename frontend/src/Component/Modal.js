@@ -1,28 +1,30 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Modal = ({ apiName, onClose }) => {
-  const [methodName, setMethodName] = useState('GET');
+  const [methodName, setMethodName] = useState("GET");
   const [endPoint, setEndPoint] = useState("");
+  const navigate = useNavigate();
   const headerMethods = [
     {
       name: "GET",
-      isDisabled: false
+      isDisabled: false,
     },
     {
       name: "POST",
-      isDisabled: true
+      isDisabled: true,
     },
     {
       name: "PUT",
-      isDisabled: true
+      isDisabled: true,
     },
     {
       name: "DELETE",
-      isDisabled: true
+      isDisabled: true,
     },
     {
       name: "PATCH",
-      isDisabled: true
+      isDisabled: true,
     },
   ];
   const handleChange = (event) => {
@@ -37,10 +39,11 @@ export const Modal = ({ apiName, onClose }) => {
     const data = {
       apiName,
       methodName,
-      endPoint
-    }
-     alert(JSON.stringify(data));
-  }
+      endPoint,
+    };
+    alert(JSON.stringify(data));
+    navigate("/apiDetails");
+  };
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 backdrop-blur">
@@ -54,20 +57,40 @@ export const Modal = ({ apiName, onClose }) => {
           <div className="p-2 bg-white rounded">
             <div className="py-6">Fetch API DATA</div>
             <div className="flex flex-row">
-              <select value={methodName} onChange={handleChange} className="px-3 mr-1 border rounded-lg border-grey">
-                {headerMethods.map( method => <option value={method.name} disabled={method.isDisabled}>{method.name}</option>)}
+              <select
+                value={methodName}
+                onChange={handleChange}
+                className="px-3 mr-1 border rounded-lg border-grey"
+              >
+                {headerMethods.map((method) => (
+                  <option value={method.name} disabled={method.isDisabled}>
+                    {method.name}
+                  </option>
+                ))}
               </select>
               <input
                 value={endPoint}
-                onChange={(e) => { changeApiName(e)}}
+                onChange={(e) => {
+                  changeApiName(e);
+                }}
                 className="w-5/6 px-3 py-3 text-sm border rounded-lg border-grey"
                 type="text"
                 placeholder="Please add api end Point"
               />
             </div>
             <div className="flex flex-row justify-end py-6">
-              <button className="w-24 h-12 ml-4 text-sm text-white rounded-lg bg-sky-700" onClick={() => onClose()}>close</button>
-              <button className="w-24 h-12 ml-4 text-sm text-white rounded-lg bg-sky-700" onClick={() => onSave()}>Save</button>
+              <button
+                className="w-24 h-12 ml-4 text-sm text-white rounded-lg bg-sky-700"
+                onClick={() => onClose()}
+              >
+                close
+              </button>
+              <button
+                className="w-24 h-12 ml-4 text-sm text-white rounded-lg bg-sky-700"
+                onClick={() => onSave()}
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>
