@@ -1,0 +1,31 @@
+Table 1
+
+| API_Id | API_Name |
+
+Id - Primary Key auto Increment
+Name - Unique Key
+
+
+----------------------------------
+
+Table 2
+
+| URL_ID | API_Id | Url | Method |
+
+Id - Foreign Key to Table 1
+UrlId= Primary Key
+
+
+-----------------------------------------
+
+Table 3
+
+| URL_ID | Status(1/0) | Time Taken to get response(float) | 
+
+UrldId- Foreign Key to Table 2 
+status - Bit with default value 1
+
+Total Count will Be calculate from Table 3 by Select Count(*) from Table # where UrlId=__
+
+----------------------------------------------------
+
