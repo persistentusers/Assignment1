@@ -33,7 +33,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="mt-48 ">
+      <div className="mt-48 text-center">
         <input
           value={inputName}
           onChange={(e) => {
@@ -54,9 +54,8 @@ const Home = () => {
         </button>
 
         {apiName && <Modal apiName={apiName} onClose={() => setApiName("")} />}
-
         {errorMessage && (
-          <p className="mt-2 ml-2 text-lg font-bold text-red-500">
+          <p className="mt-2 text-sm font-bold text-center text-red-500 error">
             {errorMessage}
           </p>
         )}

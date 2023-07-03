@@ -1,6 +1,5 @@
 .App {
   min-height: 100vh;
-  text-align: center;
   background-image: url("../src/homeImage.webp");
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -14,4 +13,8 @@
   align-items: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.error {
+  padding-right: 18rem;
 }

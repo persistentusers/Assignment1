@@ -50,20 +50,26 @@ export const Modal = ({ apiName, onClose }) => {
   const changeApiName = (e) => {
     const value = e.target.value;
 
-    if (/\s/.test(value)) {
-      setErrorMessage("*Spaces are not allowed.");
-    } else if (/[!@#$%^&*(),.?"{}|<>]/.test(value)) {
-      setErrorMessage("*Special characters are not allowed.");
-    } else {
-      setErrorMessage("");
-
-      setEndPoint(value);
-    }
+    setEndPoint(value);
   };
+
+  // const onSave = () => {
+  //   if (methodName === "" || endPoint.trim() === "") {
+  //     setErrorMessage("*This is a mandatory field.");
+  //   } else {
+  //     const data = {
+  //       apiName,
+  //       methodName,
+  //       endPoint,
+  //     };
 
   const onSave = () => {
     if (methodName === "" || endPoint.trim() === "") {
       setErrorMessage("*This is a mandatory field.");
+    } else if (endPoint.includes(" ")) {
+      setErrorMessage("*Space not allowed.");
+    } else if (/[!@#$%^&*(),?"{}|<>]/.test(endPoint)) {
+      setErrorMessage("*Special characters are not allowed.");
     } else {
       const data = {
         apiName,
@@ -72,6 +78,8 @@ export const Modal = ({ apiName, onClose }) => {
 
         endPoint,
       };
+
+      localStorage.setItem("apiDetails", JSON.stringify(data));
 
       alert(JSON.stringify(data));
 
