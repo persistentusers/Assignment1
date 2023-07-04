@@ -6,15 +6,13 @@
   background-size: cover;
 }
 
-.App-header {
-  background-color: #282c34;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 .error {
-  padding-right: 18rem;
+  padding-left: 22rem;
+}
+.boxwidth {
+  width: 500px;
+  margin-top: 8rem;
+}
+.boxwidth input {
+  width: 350px;
 }

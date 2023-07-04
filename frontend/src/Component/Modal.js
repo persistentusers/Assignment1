@@ -4,41 +4,33 @@ import { useNavigate } from "react-router-dom";
 
 export const Modal = ({ apiName, onClose }) => {
   const [methodName, setMethodName] = useState("GET");
-
   const [endPoint, setEndPoint] = useState("");
-
   const [errorMessage, setErrorMessage] = useState("");
-
   const navigate = useNavigate();
 
   const headerMethods = [
     {
       name: "GET",
-
       isDisabled: false,
     },
 
     {
       name: "POST",
-
       isDisabled: true,
     },
 
     {
       name: "PUT",
-
       isDisabled: true,
     },
 
     {
       name: "DELETE",
-
       isDisabled: true,
     },
 
     {
       name: "PATCH",
-
       isDisabled: true,
     },
   ];
@@ -53,16 +45,6 @@ export const Modal = ({ apiName, onClose }) => {
     setEndPoint(value);
   };
 
-  // const onSave = () => {
-  //   if (methodName === "" || endPoint.trim() === "") {
-  //     setErrorMessage("*This is a mandatory field.");
-  //   } else {
-  //     const data = {
-  //       apiName,
-  //       methodName,
-  //       endPoint,
-  //     };
-
   const onSave = () => {
     if (methodName === "" || endPoint.trim() === "") {
       setErrorMessage("*This is a mandatory field.");
@@ -73,18 +55,12 @@ export const Modal = ({ apiName, onClose }) => {
     } else {
       const data = {
         apiName,
-
         methodName,
-
         endPoint,
       };
 
       localStorage.setItem("apiDetails", JSON.stringify(data));
-
-      alert(JSON.stringify(data));
-
       setErrorMessage("");
-
       navigate("/apiDetails");
     }
   };
@@ -101,7 +77,7 @@ export const Modal = ({ apiName, onClose }) => {
           </button>
 
           <div className="p-2 bg-white rounded">
-            <div className="py-6">Fetch API DATA</div>
+            <div className="py-6 text-center">Fetch API DATA</div>
 
             <div className="flex flex-row">
               <select
@@ -136,13 +112,9 @@ export const Modal = ({ apiName, onClose }) => {
                   <p
                     style={{
                       position: "absolute",
-
                       bottom: "-18px",
-
                       left: 0,
-
                       color: "#f00",
-
                       fontSize: "0.75rem",
                     }}
                   >

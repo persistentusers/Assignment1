@@ -33,32 +33,31 @@ const Home = () => {
 
   return (
     <>
-      <div className="mt-48 text-center">
-        <input
-          value={inputName}
-          onChange={(e) => {
-            onInputAPIChange(e);
-          }}
-          className="w-4/12 px-8 py-4 text-sm border-none rounded-lg shadow-md shadow-black"
-          type="text"
-          placeholder="Please Add API Name"
-        />
-
-        <button
-          className="w-24 h-12 ml-4 text-sm text-white rounded-lg bg-sky-700"
-          onClick={() => {
-            onSubmitAPIName();
-          }}
-        >
-          Create API
-        </button>
+      <div className="block m-auto boxwidth h-80">
+        <div className="flex gap-2">
+          <input
+            value={inputName}
+            onChange={(e) => {
+              onInputAPIChange(e);
+            }}
+            className="w-4/12 px-3 py-4 text-sm border-none rounded-lg shadow-md shadow-black"
+            type="text"
+            placeholder="Please Add API Name"
+          />
+          <button
+            className="w-24 h-12 ml-4 text-sm text-white rounded-lg bg-sky-700"
+            onClick={() => {
+              onSubmitAPIName();
+            }}
+          >
+            Create API
+          </button>
+        </div>
+        {errorMessage && (
+          <p className="mt-2 text-sm font-bold text-red-500">{errorMessage}</p>
+        )}
 
         {apiName && <Modal apiName={apiName} onClose={() => setApiName("")} />}
-        {errorMessage && (
-          <p className="mt-2 text-sm font-bold text-center text-red-500 error">
-            {errorMessage}
-          </p>
-        )}
       </div>
     </>
   );
