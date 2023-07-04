@@ -2,18 +2,18 @@
 Software Requiremnt - MySQL WorkBench And MySQL Server 
 
 
-
 28/6/2023 --- Table to Add api ---
 
 CREATE DATABASE apimonitoring;
 
 USE apimonitoring;
 
-create table AddApi(
-	Id INT NOT NULL  auto_increment ,
-	API_Name  varchar(50) NOT NULL,
+create table ADDAPI(
+	API_ID INT NOT NULL  auto_increment ,
+	API_NAME  varchar(50) NOT NULL,
 
-	PRIMARY KEY (id)
+	PRIMARY KEY (API_ID),
+    UNIQUE(API_NAME)
 );
 
 
@@ -22,9 +22,24 @@ create table AddApi(
 
 create table addapi_url(
 	URL_ID INT NOT NULL  auto_increment,
-	API_Id INT NOT NULL,
+	API_ID INT NOT NULL,
 	API_URL  varchar(100) NOT NULL ,
 
 	PRIMARY KEY (URL_ID),
     FOREIGN KEY (API_Id) REFERENCES addapi(API_Id)
+);
+
+
+30/6/2023 -- Table to add url Status  -----
+
+create table ADDAPI_STATUS(
+STATUS_ID INT NOT NULL  auto_increment,
+URL_ID INT NOT NULL,
+URL_STATUS TINYINT NOT NULL DEFAULT 1,
+RESPONSE_TIME FLOAT,
+
+ 
+
+PRIMARY KEY (STATUS_ID),
+FOREIGN KEY (URL_ID) REFERENCES ADDAPI_URL(URL_ID)
 );
