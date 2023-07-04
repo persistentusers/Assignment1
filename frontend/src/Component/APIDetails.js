@@ -8,7 +8,6 @@ const APIDetails = () => {
 
   const apiDetails = localStorage.getItem("apiDetails");
   const apiData = JSON.parse(apiDetails);
-  console.log(apiData, "apiDetails");
 
   useEffect(() => {
     setActiveTab({
@@ -29,12 +28,14 @@ const APIDetails = () => {
 
   const onActiveDetails = (activeDetail) => {
     setDetailsTab(activeDetail);
+
     axios({
       method: apiData?.methodName,
       url: apiData?.endPoint,
     }).then((response) => {
-      console.log(response);
       const res = response?.data;
+      const reqHeaders = response?.headers;
+      const reqConfig = response?.config;
 
       if (activeDetail === "response") {
         setDetails({
@@ -43,17 +44,13 @@ const APIDetails = () => {
         });
       }
       if (activeDetail === "request") {
-        let request = new XMLHttpRequest();
-        request.open("GET", "https://rickandmortyapi.com/api/character/2");
-        request.send();
         setDetails({
           ...details,
-          data: request,
+          data: { ...reqConfig, ...reqHeaders },
         });
       }
     });
   };
-  console.log(activeTab, "activeTab", details);
 
   return (
     <div className="mt-4 bg-white shadow-lg h-96 shadow-black">
@@ -95,8 +92,8 @@ const APIDetails = () => {
           </div>
         </div>
 
-        <div className="relative pt-16 pl-4 overflow-y-auto h-80">
-          {JSON.stringify(details?.data)}
+        <div className="relative pt-16 pl-4 overflow-auto h-80">
+          <pre>{JSON.stringify(details?.data, null, 2)}</pre>
         </div>
       </div>
     </div>
