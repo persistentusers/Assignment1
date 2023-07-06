@@ -1,13 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Modal } from "./Modal";
 
 const Home = () => {
   const [inputName, setInputName] = useState("");
-
   const [apiName, setApiName] = useState("");
-
   const [errorMessage, seterrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const onInputAPIChange = (e) => {
     const value = e.target.value;
@@ -29,7 +29,9 @@ const Home = () => {
     }
   };
 
-  console.log(apiName);
+  const onHandlerSchedular = () => {
+    navigate("/schedular");
+  };
 
   return (
     <>
@@ -51,6 +53,15 @@ const Home = () => {
             }}
           >
             Create API
+          </button>
+
+          <button
+            className="w-24 h-12 ml-4 text-sm text-white rounded-lg bg-sky-700"
+            onClick={() => {
+              onHandlerSchedular();
+            }}
+          >
+            Schedular
           </button>
         </div>
         {errorMessage && (

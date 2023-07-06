@@ -1,10 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const APIDetails = () => {
   const [activeTab, setActiveTab] = useState({ name: "", url: "" });
   const [detailsTab, setDetailsTab] = useState("");
   const [details, setDetails] = useState({});
+  const navigate = useNavigate();
 
   const apiDetails = localStorage.getItem("apiDetails");
   const apiData = JSON.parse(apiDetails);
@@ -69,27 +71,40 @@ const APIDetails = () => {
 
       <div id={activeTab?.name} className="pt-4">
         <h3 className="font-bold text-center">API URL - {activeTab?.url}</h3>
-        <div className="flex gap-2 pl-4">
-          <div
-            className={`w-auto cursor-pointer ${
-              detailsTab === "request" ? "text-blue-500" : ""
-            }`}
+        <div
+          className="flex justify-between pr-8 "
+          style={{ marginBottom: "-8px" }}
+        >
+          <div className="flex gap-2 pl-4">
+            <div
+              className={`w-auto cursor-pointer ${
+                detailsTab === "request" ? "text-blue-500" : ""
+              }`}
+              onClick={() => {
+                onActiveDetails("request");
+              }}
+            >
+              Request{" "}
+            </div>
+            <div
+              className={`block w-auto cursor-pointer ${
+                detailsTab === "response" ? "text-blue-500" : ""
+              }`}
+              onClick={() => {
+                onActiveDetails("response");
+              }}
+            >
+              Response{" "}
+            </div>
+          </div>
+          <button
+            className="w-24 h-8 ml-4 text-sm text-white rounded-lg bg-sky-700"
             onClick={() => {
-              onActiveDetails("request");
+              navigate("/apiValidation");
             }}
           >
-            Request{" "}
-          </div>
-          <div
-            className={`block w-auto cursor-pointer ${
-              detailsTab === "response" ? "text-blue-500" : ""
-            }`}
-            onClick={() => {
-              onActiveDetails("response");
-            }}
-          >
-            Response{" "}
-          </div>
+            Validate
+          </button>
         </div>
 
         <div className="relative pt-16 pl-4 overflow-auto h-80">

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const Modal = ({ apiName, onClose }) => {
   const [methodName, setMethodName] = useState("GET");
@@ -11,24 +11,20 @@ export const Modal = ({ apiName, onClose }) => {
   const headerMethods = [
     {
       name: "GET",
-      isDisabled: false,
-    },
-
-    {
-      name: "POST",
       isDisabled: true,
     },
-
+    {
+      name: "POST",
+      isDisabled: false,
+    },
     {
       name: "PUT",
       isDisabled: true,
     },
-
     {
       name: "DELETE",
       isDisabled: true,
     },
-
     {
       name: "PATCH",
       isDisabled: true,
@@ -58,6 +54,17 @@ export const Modal = ({ apiName, onClose }) => {
         methodName,
         endPoint,
       };
+      axios({
+        method: "post",
+        url: "http://localhost/cgi-bin/assignment.cgi",
+        data: data,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }).then((response) => {
+        console.log(response);
+      });
 
       localStorage.setItem("apiDetails", JSON.stringify(data));
       setErrorMessage("");

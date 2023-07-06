@@ -9,10 +9,42 @@
 .error {
   padding-left: 22rem;
 }
+
 .boxwidth {
-  width: 500px;
+  width: 700px;
   margin-top: 8rem;
 }
+
 .boxwidth input {
   width: 350px;
+}
+
+table {
+  width: 1000px;
+  height: 200px;
+  border: 2px solid black;
+  text-align: center;
+}
+
+th {
+  border: 2px solid black;
+  background-color: rgb(210, 208, 208);
+}
+
+td {
+  border: 2px solid black;
+}
+
+.table-centre {
+  display: grid;
+  place-items: center;
+  align-items: center;
+}
+
+.table-container {
+  align-items: center;
+}
+
+.margin {
+  margin-top: 80px;
 }
