@@ -10,7 +10,7 @@ our @ISA = qw(Exporter);
 
 my $dbh;
 
-sub connect{
+sub connect_db{
     my $driver = "mysql";  
     my $database = "apimonitoring";  
     my $dsn      = "dbi:$driver:database=$database";  
