@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 export const Modal = ({ apiName, onClose }) => {
   const [methodName, setMethodName] = useState("GET");
@@ -46,29 +47,77 @@ export const Modal = ({ apiName, onClose }) => {
       setErrorMessage("*This is a mandatory field.");
     } else if (endPoint.includes(" ")) {
       setErrorMessage("*Space not allowed.");
-    } else if (/[!@#$%^&*(),?"{}|<>]/.test(endPoint)) {
+    } else if (/[!@#$%^&*(),"{}|<>]/.test(endPoint)) {
       setErrorMessage("*Special characters are not allowed.");
     } else {
       const data = {
         apiName,
-        methodName,
+        // methodName,
         endPoint,
       };
+
+      const onRedirectTime = new Promise((resolve) => {
+        return setTimeout(resolve, 1500);
+      });
+      const toastId = toast.loading("Loading...");
+
       axios({
         method: "post",
-        url: "http://localhost/cgi-bin/assignment.cgi",
+        url: "http://localhost/cgi-bin/apiMonitoring.cgi",
         data: data,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-      }).then((response) => {
-        console.log(response);
-      });
+      })
+        .then((response) => {
+          console.log(response);
+          toast.update(toastId, {
+            autoClose: 1000,
+            render: "Sucees",
+            type: "success",
+            isLoading: false,
+          });
+          onRedirectTime.then(() => {
+            navigate("/apiDetails");
+          });
+          if (response?.data === "SUCCESS") {
+            toast.update(toastId, {
+              autoClose: 1000,
+              render: "Sucees",
+              type: "success",
+              isLoading: false,
+            });
+            onRedirectTime.then(() => {
+              navigate("/apiDetails");
+            });
+          } else {
+            toast.update(toastId, {
+              autoClose: 1000,
+              render: "Fail",
+              type: "error",
+              isLoading: false,
+            });
+            onRedirectTime.then(() => {
+              onClose();
+              navigate("/");
+            });
+          }
+        })
+        .catch(() => {
+          toast.update(toastId, {
+            autoClose: 1000,
+            render: "Fail",
+            type: "error",
+            isLoading: false,
+          });
+          onRedirectTime.then(() => {
+            navigate("/");
+          });
+        });
 
       localStorage.setItem("apiDetails", JSON.stringify(data));
       setErrorMessage("");
-      navigate("/apiDetails");
     }
   };
 
@@ -149,6 +198,7 @@ export const Modal = ({ apiName, onClose }) => {
           </div>
         </div>
       </div>
+      <ToastContainer autoClose={1000} />
     </>
   );
 };

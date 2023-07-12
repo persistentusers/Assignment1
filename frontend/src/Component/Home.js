@@ -55,14 +55,14 @@ const Home = () => {
             Create API
           </button>
 
-          <button
+          {/* <button
             className="w-24 h-12 ml-4 text-sm text-white rounded-lg bg-sky-700"
             onClick={() => {
               onHandlerSchedular();
             }}
           >
             Schedular
-          </button>
+          </button> */}
         </div>
         {errorMessage && (
           <p className="mt-2 text-sm font-bold text-red-500">{errorMessage}</p>

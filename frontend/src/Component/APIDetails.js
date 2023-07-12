@@ -6,6 +6,7 @@ const APIDetails = () => {
   const [activeTab, setActiveTab] = useState({ name: "", url: "" });
   const [detailsTab, setDetailsTab] = useState("");
   const [details, setDetails] = useState({});
+  const [responseData, setResponseData] = useState(null);
   const navigate = useNavigate();
 
   const apiDetails = localStorage.getItem("apiDetails");
@@ -17,6 +18,7 @@ const APIDetails = () => {
       name: apiData?.apiName,
       url: apiData?.endPoint,
     });
+    onActiveDetails("response");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -44,6 +46,7 @@ const APIDetails = () => {
           ...details,
           data: res,
         });
+        setResponseData(res);
       }
       if (activeDetail === "request") {
         setDetails({
@@ -52,6 +55,10 @@ const APIDetails = () => {
         });
       }
     });
+  };
+
+  const navigateToValidation = () => {
+    navigate("/apiValidation", { state: { responseData } }); /// new
   };
 
   return (
@@ -70,7 +77,12 @@ const APIDetails = () => {
       </div>
 
       <div id={activeTab?.name} className="pt-4">
-        <h3 className="font-bold text-center">API URL - {activeTab?.url}</h3>
+        <div className="flex pl-4">
+          <span className="font-bold text-green-500 grow ">
+            Status: Success
+          </span>
+          <h3 className="font-bold grow">API URL - {activeTab?.url}</h3>
+        </div>
         <div
           className="flex justify-between pr-8 "
           style={{ marginBottom: "-8px" }}
@@ -100,7 +112,7 @@ const APIDetails = () => {
           <button
             className="w-24 h-8 ml-4 text-sm text-white rounded-lg bg-sky-700"
             onClick={() => {
-              navigate("/apiValidation");
+              navigateToValidation();
             }}
           >
             Validate

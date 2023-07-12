@@ -1,32 +1,33 @@
 import "./../App.css";
-import React from "react";
+
+import React, { useState } from "react";
+
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
 
 const APIValidation = () => {
-  const data = [
+  const [resultMessage, setResultMessage] = useState(null);
+  const [targetvalue, setTargetValue] = useState(["", ""]);
+  const navigate = useNavigate();
+  const { state, pathname } = useLocation();
+  const { responseData } = state;
+  const apiDetails = localStorage.getItem("apiDetails");
+  const apiData = JSON.parse(apiDetails);
+
+  const Info = [
     {
-      Property: "....",
+      Property: "id",
     },
+
     {
-      Property: "....",
+      Property: "Name",
     },
   ];
 
   const headerMethods = [
     {
       name: "Equals to",
-      isDisabled: false,
-    },
-
-    {
-      name: "Less than equals to",
-      isDisabled: true,
-    },
-    {
-      name: "Greater than equals to",
-      isDisabled: true,
-    },
-    {
-      name: "Not equals to",
       isDisabled: true,
     },
   ];
@@ -36,75 +37,194 @@ const APIValidation = () => {
       name: "JSON Header",
       isDisabled: false,
     },
+
     {
       name: "JSON Body",
       isDisabled: true,
     },
   ];
 
+  const onSave = () => {
+    const data = {
+      API_NAME: apiData?.apiName,
+      COMPARISON_ID: targetvalue[0],
+      COMPARISION_NAME: targetvalue[1],
+    };
+
+    axios({
+      method: "post",
+      url: "http://localhost/cgi-bin/insertApiValidation.cgi",
+      data: data,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      navigate("/schedular", { state: { previousPath: pathname } });
+      toast.success("Data saved successfully.");
+    });
+
+    localStorage.setItem("validationdetails", JSON.stringify(data));
+  };
+
+  const [comparison, setComparison] = useState(["Equals to", "Equals to"]);
+
+  const handleComparisonChange = (event, i) => {
+    const updatedComparison = [...comparison];
+
+    updatedComparison[i] = event.target.value;
+
+    setComparison(updatedComparison);
+  };
+
+  const handleChangetargetvalue = (event, i) => {
+    const updatedValues = [...targetvalue];
+    updatedValues[i] = event.target.value;
+    setTargetValue(updatedValues);
+  };
+
+  console.log(resultMessage);
+
+  const onRun = () => {
+    const comparisonResults = [
+      {
+        value: targetvalue[0],
+        method: comparison[0],
+        comparisonResult: performComparison(
+          responseData.id,
+          targetvalue[0],
+          comparison[0]
+        ),
+      },
+
+      {
+        value: targetvalue[1],
+        method: comparison[1],
+        comparisonResult: performComparison(
+          responseData.name,
+          targetvalue[1],
+          comparison[1]
+        ),
+      },
+    ];
+
+    comparisonResults.forEach((result) => {
+      const comparisonMessage = result.comparisonResult ? true : false;
+      console.log(comparisonMessage, "comparisonMessage");
+      setResultMessage(comparisonMessage);
+    });
+
+    // Do something with the comparisonResults
+
+    console.log(comparisonResults);
+  };
+
+  const performComparison = (propertyValue, targetValue, method) => {
+    if (method === "Equals to") {
+      const comparisonResult =
+        propertyValue.toString() === targetValue.toString();
+
+      return comparisonResult;
+    }
+
+    // Add more comparison methods as needed
+
+    return false;
+  };
+
+  const isSaveButtonDisabled = targetvalue.some((value) => value.trim() === "");
+  const isRunButtonDisabled = targetvalue.some((value) => value.trim() === "");
+
   return (
-    <div className="table-container table-centre">
-      <div div className="mt-4 bg-white shadow-lg h-96 shadow-black">
-        <table className="margin">
-          <thead>
-            <tr>
-              <th>Source</th>
-              <th>Property</th>
-              <th>Comparison</th>
-              <th>Target Value</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {data.map((val, i) => (
+    <>
+      <div className="table-container table-centre">
+        <div className="mt-4 bg-white shadow-lg h-96 shadow-black">
+          <table className="margin">
+            <thead>
               <tr>
-                <td>
-                  {" "}
-                  <select className="px-3 mr-1 border rounded-lg border-grey">
-                    {source.map((method) => (
-                      <option key={method.name} value={method.name}>
-                        {method.name}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-
-                <td>{val.Property}</td>
-
-                <td>
-                  {" "}
-                  <select className="px-3 mr-1 border rounded-lg border-grey">
-                    {headerMethods.map((method) => (
-                      <option key={method.name} value={method.name}>
-                        {method.name}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-
-                <td>
-                  {" "}
-                  <input
-                    className="w-2/3 px-8 py-4 text-sm border-none rounded-lg shadow-md shadow-black"
-                    type="text"
-                    placeholder="Enter Target Value"
-                  />
-                </td>
+                <th>Source</th>
+                <th>Property</th>
+                <th>Comparison</th>
+                <th>Target Value</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
 
-        <div className="flex justify-center p-4 space-x-4">
-          <button className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-            Save
-          </button>
-          <button className="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700">
-            Run
-          </button>
+            <tbody>
+              {Info.map((val, i) => (
+                <tr key={i}>
+                  <td>
+                    {" "}
+                    <select className="px-3 mr-1 border rounded-lg border-grey">
+                      {source.map((method) => (
+                        <option key={method.name} value={method.name}>
+                          {method.name}
+                        </option>
+                      ))}
+                    </select>{" "}
+                  </td>
+
+                  <td>{val.Property}</td>
+
+                  <td>
+                    {" "}
+                    <select
+                      value={comparison[i]}
+                      onChange={(event) => handleComparisonChange(event, i)}
+                      className="px-3 mr-1 border rounded-lg border-grey"
+                    >
+                      {headerMethods.map((method) => (
+                        <option key={method.name} value={method.name}>
+                          {method.name}
+                        </option>
+                      ))}
+                    </select>{" "}
+                  </td>
+
+                  <td>
+                    {" "}
+                    <input
+                      value={targetvalue[i]}
+                      onChange={(event) => handleChangetargetvalue(event, i)}
+                      className="w-2/3 px-8 py-4 text-sm border-none rounded-lg shadow-md shadow-black"
+                      type="text"
+                      placeholder="Enter Target Value"
+                    />{" "}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <div className="flex justify-center p-4 space-x-4">
+            <button
+              className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+              onClick={onSave}
+              disabled={isSaveButtonDisabled}
+            >
+              Save
+            </button>
+            <button
+              className="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700"
+              onClick={onRun}
+              disabled={isRunButtonDisabled}
+            >
+              Run
+            </button>
+          </div>
+
+          {resultMessage !== null && (
+            <div
+              className={`pl-4 text-md font-bold ${
+                resultMessage ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              Result: {resultMessage ? "Test Pass" : "Test Fail"}
+            </div>
+          )}
         </div>
       </div>
-    </div>
+      <ToastContainer autoClose={1000} />
+    </>
   );
 };
 
