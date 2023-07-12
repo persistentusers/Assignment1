@@ -22,10 +22,11 @@ sub connect_db{
 
 sub insert_api_name{
     my $sth = $dbh->prepare("INSERT INTO ADDAPI (API_NAME) values (?)");
-    my $rv=$sth->execute(@_) 
-            or die $DBI::errstr;
-    if(! defined $rv) {return 0;}
-    else {return 1;}
+    my $rv=$sth->execute(@_);
+            # or die $DBI::errstr;
+    if(! defined $rv || $rv < 1) 
+    {print "Faild insertion, Duplicate entry!";}
+    else {print "1 Row added successfully.";}
     $sth->finish();
 }
 
