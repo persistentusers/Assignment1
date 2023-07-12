@@ -1,63 +1,70 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { apisData, getAllScheduleData, minutesDiff, fetchNames } from "../utility/utility";
 
-const ScheduleAPI = () => {
-  const [activeTab, setActiveTab] = useState({ apiname: "", time: "" });
+
+export const SheduleAPI = (props) => {
+  const [activeTab, setActiveTab] = useState({ });
+  const [allScheduleApis, setAllScheduleApis] = useState([]);
 
   const Schedular_Result = [
     {
-      Property: "ID",
+      Property: 'ID',
       Comparison: "Equal",
-      Target: "2",
-      Result: "Pass",
+      Target: '2',
+      Result: 'Pass'
     },
     {
-      Property: "Name",
+      Property: 'Name',
       Comparison: "Equal",
-      Target: "Manoj",
-      Result: "Fail",
-    },
+      Target: 'Manoj',
+      Result: 'Fail'
+    }
   ];
 
   const scheduleDetails = localStorage.getItem("scheduledetails");
   const apiData = JSON.parse(scheduleDetails);
+  console.log(apiData, "apiDetails");
 
   useEffect(() => {
+    const data = fetchNames();
+
+    const allscheduleApi = data?.[0] || "";
+    const allApiData = data?.[1]|| [];
+
+    // const data1 = "2#2023-07-12 19:07:19#1#0,1#2023-07-12 11:52:35#1#1,";
+    const finalData = getAllScheduleData(allscheduleApi, allApiData)
+    setAllScheduleApis(finalData);
     setActiveTab({
-      ...activeTab,
-      apiname: apiData?.apiName,
-      time: apiData?.time,
+      ...finalData[0],
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onActiveTabChange = (tabInfo) => {
     setActiveTab({
-      ...activeTab,
-      apiname: tabInfo?.apiName,
-      time: tabInfo?.time,
+      ...tabInfo,
     });
   };
 
   return (
     <div className="mt-4 bg-white shadow-lg h-96 shadow-black">
-      <div className="float-left border border-black border-solid h-full bg-[#ccc] w-48">
-        <div
+      <div className="float-left border border-black border-solid h-full bg-[#ccc] w-56">
+        {allScheduleApis.map(schedule => <div
           onClick={() => {
-            onActiveTabChange(apiData);
+            onActiveTabChange(schedule);
           }}
-          className={`p-4 font-bold text-black transition  ${
-            activeTab?.apiname === apiData?.apiName ? "bg-[#aaada9]" : "bg-none"
-          }`}
+          className={`p-4 font-bold text-black transition  ${activeTab?.statusId === schedule?.statusId ? "bg-[#827695]" : "bg-none"
+            }`}
         >
-          {apiData.apiName}
-        </div>
+          {schedule?.name} 
+          <div className="text-xs">{`${ minutesDiff(schedule?.date)} minutes ago`}</div>
+        </div>)}
       </div>
       <div id={activeTab?.name} className="pt-4">
-        <h3 className="font-bold text-center">
-          API Name - {activeTab?.apiname} || Time - {activeTab?.time}
-        </h3>
-
-        <h3 className="ml-64 text-lg font-bold"> Validations </h3>
+        <h3 className="font-bold text-center">API Name - {activeTab?.apiname} || Time - {activeTab?.time}</h3>
+        <h1 className={`ml-64 text-lg font-bold ${activeTab?.status === "1" ? "text-green-600": " text-red-600 "}`} >{activeTab?.status === "1" ? "Passed" : "Failed"}</h1>
+        <h3 className="ml-64 text-lg font-bold" > Validations </h3>
         <table className="mt-8 ml-96">
           <thead>
             <tr>
@@ -76,10 +83,12 @@ const ScheduleAPI = () => {
                 <td>{schedule.Result}</td>
               </tr>
             ))}
+
           </tbody>
         </table>
       </div>
     </div>
   );
+
 };
-export default ScheduleAPI;
+export default SheduleAPI;
