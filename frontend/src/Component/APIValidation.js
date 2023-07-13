@@ -83,8 +83,6 @@ const APIValidation = () => {
     setTargetValue(updatedValues);
   };
 
-  console.log(resultMessage);
-
   const onRun = () => {
     const comparisonResults = [
       {
@@ -108,15 +106,8 @@ const APIValidation = () => {
       },
     ];
 
-    comparisonResults.forEach((result) => {
-      const comparisonMessage = result.comparisonResult ? true : false;
-      console.log(comparisonMessage, "comparisonMessage");
-      setResultMessage(comparisonMessage);
-    });
-
-    // Do something with the comparisonResults
-
-    console.log(comparisonResults);
+    const result = comparisonResults.some((obj) => !obj.comparisonResult);
+    setResultMessage(result);
   };
 
   const performComparison = (propertyValue, targetValue, method) => {
@@ -215,10 +206,10 @@ const APIValidation = () => {
           {resultMessage !== null && (
             <div
               className={`pl-4 text-md font-bold ${
-                resultMessage ? "text-green-500" : "text-red-500"
+                resultMessage === false ? "text-green-500" : "text-red-500"
               }`}
             >
-              Result: {resultMessage ? "Test Pass" : "Test Fail"}
+              Result: {resultMessage === false ? "Test Pass" : "Test Fail"}
             </div>
           )}
         </div>

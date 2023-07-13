@@ -71,7 +71,6 @@ export const Modal = ({ apiName, onClose }) => {
         },
       })
         .then((response) => {
-          console.log(response);
           toast.update(toastId, {
             autoClose: 1000,
             render: "Sucees",
@@ -185,7 +184,7 @@ export const Modal = ({ apiName, onClose }) => {
                 className="w-24 h-12 ml-4 text-sm text-white rounded-lg bg-sky-700"
                 onClick={() => onClose()}
               >
-                close
+                Close
               </button>
 
               <button

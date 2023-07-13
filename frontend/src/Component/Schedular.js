@@ -41,7 +41,6 @@ const Schedular = () => {
       url: "http://localhost/cgi-bin/getApi.cgi",
     })
       .then((response) => {
-        console.log(response);
         const normalizeData = response?.data?.split("-").join().split("#");
         const apisData = normalizeData
           .filter((str) => str)
@@ -55,7 +54,7 @@ const Schedular = () => {
             const filteredData = apisData?.find((res) => {
               return res?.name === apiData?.apiName;
             });
-            console.log(filteredData);
+
             setApiName({
               id: filteredData?.id,
               name: filteredData?.name,
@@ -83,7 +82,7 @@ const Schedular = () => {
     const id = el.getAttribute("id");
     setApiName({ id, name: e.target.value });
   };
-  console.log(apiName);
+
   const onSave = () => {
     const data = {
       ...apiName,
@@ -94,19 +93,6 @@ const Schedular = () => {
       API_ID: apiName?.id,
       SCHEDULAR_TIME: String(time),
     };
-
-    // axios({
-    //   method: "post",
-    //   url: "http://localhost/cgi-bin/getApiValidation.cgi",
-    //   data: { API_ID: data?.id },
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // .then((response) => {
-    // console.log(response);
-    // if (response.data) {
     axios({
       method: "post",
       url: "http://localhost/cgi-bin/insertApiScheduler.cgi",
@@ -117,19 +103,11 @@ const Schedular = () => {
       },
     })
       .then((dataResponse) => {
-        console.log(dataResponse, "api validate");
         navigate("/scheduleApi");
       })
       .catch((error) => toast.error("Error occurred"));
-    // } else {
-    //   navigate("/apiValidation");
-    //   toast.warn("Please add validation first for api");
-    // }
-    // })
-    // .catch((error) => toast.error("Error occurred"));
 
     localStorage.setItem("scheduledetails", JSON.stringify(data));
-    // alert(JSON.stringify(data));
   };
 
   return (

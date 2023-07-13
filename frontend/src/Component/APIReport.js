@@ -20,17 +20,11 @@ const APIReport = () => {
 
       setReport(getData);
     });
-    // const data = {
-    //   hits: 10,
-    //   success: 7,
-    //   fail: 3,
-    //   time: 2.2,
-    // };
   };
   useEffect(() => {
     fetchUserData();
   }, []);
-  console.log(report);
+
   return (
     <div className="flex flex-col p-8 bg-white rounded text-md ">
       <div className="font-bold text-center">API Report</div>
