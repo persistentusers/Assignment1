@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { headerMethods  } from "../utility/utility";
+
 
 export const Modal = ({ apiName, onClose }) => {
   const [methodName, setMethodName] = useState("GET");
@@ -9,36 +11,12 @@ export const Modal = ({ apiName, onClose }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  const headerMethods = [
-    {
-      name: "GET",
-      isDisabled: true,
-    },
-    {
-      name: "POST",
-      isDisabled: false,
-    },
-    {
-      name: "PUT",
-      isDisabled: true,
-    },
-    {
-      name: "DELETE",
-      isDisabled: true,
-    },
-    {
-      name: "PATCH",
-      isDisabled: true,
-    },
-  ];
-
-  const handleChange = (event) => {
+  const handleChange = event => {
     setMethodName(event.target.value);
   };
 
-  const changeApiName = (e) => {
+  const changeApiName = e => {
     const value = e.target.value;
-
     setEndPoint(value);
   };
 
@@ -52,11 +30,10 @@ export const Modal = ({ apiName, onClose }) => {
     } else {
       const data = {
         apiName,
-        // methodName,
         endPoint,
       };
 
-      const onRedirectTime = new Promise((resolve) => {
+      const onRedirectTime = new Promise(resolve => {
         return setTimeout(resolve, 1500);
       });
       const toastId = toast.loading("Loading...");

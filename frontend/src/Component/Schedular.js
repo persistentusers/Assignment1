@@ -2,29 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
+import { timeMethods } from "../utility/utility";
 
-const timeMethods = [
-  {
-    name: "5 min",
-    value: 5,
-  },
-  {
-    name: "10 min",
-    value: 10,
-  },
-  {
-    name: "15 min ",
-    value: 15,
-  },
-  {
-    name: "20 min",
-    value: 20,
-  },
-  {
-    name: "30 min",
-    value: 30,
-  },
-];
+
 
 const Schedular = () => {
   const [time, setTime] = useState(5);
@@ -40,7 +20,7 @@ const Schedular = () => {
       method: "GET",
       url: "http://localhost/cgi-bin/getApi.cgi",
     })
-      .then((response) => {
+      .then(response => {
         const normalizeData = response?.data?.split("-").join().split("#");
         const apisData = normalizeData
           .filter((str) => str)
@@ -68,6 +48,7 @@ const Schedular = () => {
         }
       })
       .catch((error) => console.log("failed to fetch Api", error));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const navigate = useNavigate();
@@ -102,10 +83,10 @@ const Schedular = () => {
         "Content-Type": "application/json",
       },
     })
-      .then((dataResponse) => {
+      .then(() => {
         navigate("/scheduleApi");
       })
-      .catch((error) => toast.error("Error occurred"));
+      .catch(() => toast.error("Error occurred"));
 
     localStorage.setItem("scheduledetails", JSON.stringify(data));
   };

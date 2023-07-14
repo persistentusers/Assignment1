@@ -9,8 +9,10 @@ import axios from "axios";
 const APIValidation = () => {
   const [resultMessage, setResultMessage] = useState(null);
   const [targetvalue, setTargetValue] = useState(["", ""]);
-  const navigate = useNavigate();
+  const [comparison, setComparison] = useState(["Equals to", "Equals to"]);
   const { state, pathname } = useLocation();
+  const navigate = useNavigate();
+
   const { responseData } = state;
   const apiDetails = localStorage.getItem("apiDetails");
   const apiData = JSON.parse(apiDetails);
@@ -52,14 +54,14 @@ const APIValidation = () => {
     };
 
     axios({
-      method: "post",
+      method: "POST",
       url: "http://localhost/cgi-bin/insertApiValidation.cgi",
       data: data,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    }).then((res) => {
+    }).then(() => {
       navigate("/schedular", { state: { previousPath: pathname } });
       toast.success("Data saved successfully.");
     });
@@ -67,13 +69,9 @@ const APIValidation = () => {
     localStorage.setItem("validationdetails", JSON.stringify(data));
   };
 
-  const [comparison, setComparison] = useState(["Equals to", "Equals to"]);
-
   const handleComparisonChange = (event, i) => {
     const updatedComparison = [...comparison];
-
     updatedComparison[i] = event.target.value;
-
     setComparison(updatedComparison);
   };
 
