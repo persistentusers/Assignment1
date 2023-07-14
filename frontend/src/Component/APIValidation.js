@@ -106,22 +106,23 @@ const APIValidation = () => {
       },
     ];
 
-    const result = comparisonResults.some((obj) => !obj.comparisonResult);
+    const result = comparisonResults.some( obj => !obj.comparisonResult)
     setResultMessage(result);
   };
+
 
   const performComparison = (propertyValue, targetValue, method) => {
     if (method === "Equals to") {
       const comparisonResult =
         propertyValue.toString() === targetValue.toString();
-
+     
       return comparisonResult;
     }
-
     // Add more comparison methods as needed
 
     return false;
   };
+  console.log(resultMessage);
 
   const isSaveButtonDisabled = targetvalue.some((value) => value.trim() === "");
   const isRunButtonDisabled = targetvalue.some((value) => value.trim() === "");

@@ -44,7 +44,14 @@ export const apisData = [
     }
 ];
 
-export const getAllScheduleData = (data, apisData) => {
+export const getAllScheduleData = (data, allApiData) => {
+    const normalizeApiData = allApiData.split("-").join().split("#");
+    const apisData = normalizeApiData
+      .filter((str) => str)
+      .map((obj) => {
+        const apiName = obj.split(",");
+        return { id: apiName?.[0], name: apiName?.[1] };
+      });
     // const filterdata = data.split(",").filter(o => o);
     data?.split(",").filter(o => o);
     const normalizeData = data?.split(",").filter(o => o).map( obj => {
@@ -78,8 +85,49 @@ export const minutesDiff = (value) => {
         axios.get("http://localhost/cgi-bin/getApi.cgi")
       ]);
       const data = res?.map((res) => res.data);
-      return data;
+      console.log(data);
+      return data?.flat();
     } catch {
       throw Error("Promise failed");
     }
   };
+
+  export const getApiDetails = response => {
+
+    const [apiName, apiUrl, comparisonId, comparisonName] =  response?.split("#");
+const data = {
+
+    apiName: apiName || "",
+
+    apiUrl: apiUrl || "",
+
+    scheduleResult: [
+
+        {
+
+            Property: 'ID',
+
+            Comparison: "Equal",
+
+            Target: comparisonId || "",
+
+            Result: 'Pass'
+
+          },
+
+          {
+
+            Property: 'Name',
+
+            Comparison: "Equal",
+
+            Target: comparisonName || "",
+
+            Result: 'Pass'
+
+          },
+    ]
+}
+
+return data;
+  }

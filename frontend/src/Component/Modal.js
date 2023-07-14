@@ -106,7 +106,7 @@ export const Modal = ({ apiName, onClose }) => {
         .catch(() => {
           toast.update(toastId, {
             autoClose: 1000,
-            render: "Fail",
+            render: "API name already exists",
             type: "error",
             isLoading: false,
           });

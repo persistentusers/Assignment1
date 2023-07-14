@@ -63,7 +63,7 @@ const APIDetails = () => {
 
   return (
     <div className="mt-4 bg-white shadow-lg h-96 shadow-black">
-      <div className="float-left border border-black border-solid h-full bg-[#ccc] w-48">
+      <div className="float-left border border-black border-solid h-full bg-[#ccc]">
         <div
           onClick={() => {
             onActiveTabChange(apiData);
