@@ -1,17 +1,13 @@
 import React, { useState } from "react";
-
 import { Modal } from "./Modal";
 
 const Home = () => {
   const [inputName, setInputName] = useState("");
-
   const [apiName, setApiName] = useState("");
-
   const [errorMessage, seterrorMessage] = useState("");
 
-  const onInputAPIChange = (e) => {
+  const onInputAPIChange = e => {
     const value = e.target.value;
-
     setInputName(value);
   };
 
@@ -24,12 +20,9 @@ const Home = () => {
       seterrorMessage("*Integer values are not allowed.");
     } else {
       setApiName(inputName);
-
       seterrorMessage("");
     }
   };
-
-  console.log(apiName);
 
   return (
     <>
@@ -37,7 +30,7 @@ const Home = () => {
         <div className="flex gap-2">
           <input
             value={inputName}
-            onChange={(e) => {
+            onChange={e => {
               onInputAPIChange(e);
             }}
             className="w-4/12 px-3 py-4 text-sm border-none rounded-lg shadow-md shadow-black"

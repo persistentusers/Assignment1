@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { headerMethods  } from "../utility/utility";
+
 
 export const Modal = ({ apiName, onClose }) => {
   const [methodName, setMethodName] = useState("GET");
@@ -8,40 +11,12 @@ export const Modal = ({ apiName, onClose }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  const headerMethods = [
-    {
-      name: "GET",
-      isDisabled: false,
-    },
-
-    {
-      name: "POST",
-      isDisabled: true,
-    },
-
-    {
-      name: "PUT",
-      isDisabled: true,
-    },
-
-    {
-      name: "DELETE",
-      isDisabled: true,
-    },
-
-    {
-      name: "PATCH",
-      isDisabled: true,
-    },
-  ];
-
-  const handleChange = (event) => {
+  const handleChange = event => {
     setMethodName(event.target.value);
   };
 
-  const changeApiName = (e) => {
+  const changeApiName = e => {
     const value = e.target.value;
-
     setEndPoint(value);
   };
 
@@ -50,18 +25,75 @@ export const Modal = ({ apiName, onClose }) => {
       setErrorMessage("*This is a mandatory field.");
     } else if (endPoint.includes(" ")) {
       setErrorMessage("*Space not allowed.");
-    } else if (/[!@#$%^&*(),?"{}|<>]/.test(endPoint)) {
+    } else if (/[!@#$%^&*(),"{}|<>]/.test(endPoint)) {
       setErrorMessage("*Special characters are not allowed.");
     } else {
       const data = {
         apiName,
-        methodName,
         endPoint,
       };
 
+      const onRedirectTime = new Promise(resolve => {
+        return setTimeout(resolve, 1500);
+      });
+      const toastId = toast.loading("Loading...");
+
+      axios({
+        method: "post",
+        url: "http://localhost/cgi-bin/apiMonitoring.cgi",
+        data: data,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          toast.update(toastId, {
+            autoClose: 1000,
+            render: "Sucees",
+            type: "success",
+            isLoading: false,
+          });
+          onRedirectTime.then(() => {
+            navigate("/apiDetails");
+          });
+          if (response?.data === "SUCCESS") {
+            toast.update(toastId, {
+              autoClose: 1000,
+              render: "Sucees",
+              type: "success",
+              isLoading: false,
+            });
+            onRedirectTime.then(() => {
+              navigate("/apiDetails");
+            });
+          } else {
+            toast.update(toastId, {
+              autoClose: 1000,
+              render: "Fail",
+              type: "error",
+              isLoading: false,
+            });
+            onRedirectTime.then(() => {
+              onClose();
+              navigate("/");
+            });
+          }
+        })
+        .catch(() => {
+          toast.update(toastId, {
+            autoClose: 1000,
+            render: "API name already exists",
+            type: "error",
+            isLoading: false,
+          });
+          onRedirectTime.then(() => {
+            navigate("/");
+          });
+        });
+
       localStorage.setItem("apiDetails", JSON.stringify(data));
       setErrorMessage("");
-      navigate("/apiDetails");
     }
   };
 
@@ -129,7 +161,7 @@ export const Modal = ({ apiName, onClose }) => {
                 className="w-24 h-12 ml-4 text-sm text-white rounded-lg bg-sky-700"
                 onClick={() => onClose()}
               >
-                close
+                Close
               </button>
 
               <button
@@ -142,6 +174,7 @@ export const Modal = ({ apiName, onClose }) => {
           </div>
         </div>
       </div>
+      <ToastContainer autoClose={1000} />
     </>
   );
 };
