@@ -19,8 +19,15 @@
   width: 350px;
 }
 
-table {
+.table-validation {
   width: 1000px;
+}
+
+.table-schedule {
+  width: 100%;
+}
+
+table {
   height: 200px;
   border: 2px solid black;
   text-align: center;
@@ -39,12 +46,4 @@ td {
   display: grid;
   place-items: center;
   align-items: center;
-}
-
-.table-container {
-  align-items: center;
-}
-
-.margin {
-  margin-top: 80px;
 }

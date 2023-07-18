@@ -104,16 +104,15 @@ const APIValidation = () => {
       },
     ];
 
-    const result = comparisonResults.some( obj => !obj.comparisonResult)
+    const result = comparisonResults.some((obj) => !obj.comparisonResult);
     setResultMessage(result);
   };
-
 
   const performComparison = (propertyValue, targetValue, method) => {
     if (method === "Equals to") {
       const comparisonResult =
         propertyValue.toString() === targetValue.toString();
-     
+
       return comparisonResult;
     }
     // Add more comparison methods as needed
@@ -127,9 +126,9 @@ const APIValidation = () => {
 
   return (
     <>
-      <div className="table-container table-centre">
+      <div className="grid items-center place-items-center">
         <div className="mt-4 bg-white shadow-lg h-96 shadow-black">
-          <table className="margin">
+          <table className="mt-20 table-validation">
             <thead>
               <tr>
                 <th>Source</th>
